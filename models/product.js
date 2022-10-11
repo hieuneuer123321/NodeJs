@@ -29,6 +29,7 @@ module.exports = class Product {
   save() {
     getProductsFromFile((products) => {
       if (this.id) {
+        // nếu có id thì sửa k thì thêm
         const existingProductId = products.findIndex(
           (product) => product.id === this.id
         );
@@ -56,6 +57,19 @@ module.exports = class Product {
     getProductsFromFile((products) => {
       const product = products.find((p) => p.id === id);
       cb(product);
+    });
+  }
+  static deleteProduct(id, callback) {
+    getProductsFromFile((products) => {
+      const UpdateProduct = products.filter((prod) => prod.id !== id);
+      if (UpdateProduct.length > 0) {
+        callback(UpdateProduct);
+      } else {
+        callback(products);
+      }
+      fs.writeFile(p, JSON.stringify(UpdateProduct), (err) => {
+        console.log("Lỗi : " + err);
+      });
     });
   }
 };
