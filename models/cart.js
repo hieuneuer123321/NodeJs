@@ -1,11 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 
-const p = path.join(
-  path.dirname(process.mainModule.filename),
-  "data",
-  "cart.json"
-);
+const p = path.join(path.dirname(require.main.filename), "data", "cart.json");
 
 module.exports = class Cart {
   static fetchAip(callback) {
@@ -14,9 +10,9 @@ module.exports = class Cart {
       "data",
       "cart.json"
     );
-    fs.readFile(pa, "utf8", (err, data) => {
-      if (!data) {
-        callback({ product: [], totalPrice: 0 });
+    fs.readFile(pa, (err, data) => {
+      if (err) {
+        callback(null);
       } else {
         callback(JSON.parse(data));
       }
@@ -26,6 +22,7 @@ module.exports = class Cart {
     // Fetch the previous cart
     fs.readFile(p, (err, fileContent) => {
       let cart = { products: [], totalPrice: 0 };
+
       if (!err) {
         cart = JSON.parse(fileContent);
       }
@@ -47,7 +44,7 @@ module.exports = class Cart {
       }
       cart.totalPrice = cart.totalPrice + +productPrice;
       fs.writeFile(p, JSON.stringify(cart), (err) => {
-        console.log(err);
+        console.log("Lỗi" + err);
       });
     });
   }
