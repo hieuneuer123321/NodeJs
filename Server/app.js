@@ -14,7 +14,7 @@ const urlencodedParser = bodyParser.urlencoded({ extended: false });
 // });
 app.use(cors());
 // app.use("/api/movies/", RtAddProduct.router);
-app.use("/api/movies/", rtMovies);
+app.use("/api/movies", urlencodedParser, rtMovies);
 app.use("/", urlencodedParser, (req, res, next) => {
   res.send("<h1>Test</h1>");
 });
