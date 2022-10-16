@@ -166,7 +166,6 @@ module.exports = class Movies {
             moviesInPage = moviesArrDiscover.slice(0, 20);
           } else {
             const start = page * moviesPage - moviesPage;
-            console.log(start);
             const end = start + moviesPage;
             moviesInPage = moviesArrDiscover.slice(start, end);
           }
