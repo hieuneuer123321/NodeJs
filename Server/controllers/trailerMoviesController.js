@@ -4,12 +4,13 @@ exports.postTrailerMovies = (req, res, next) => {
   const id = req.params.id;
   if (!id) {
     res.status(400).send("Not found film_id parram");
+  } else {
+    TrailerMovies.postTrailerMovies(id, (movie) => {
+      if (!movie) {
+        res.status(404).send("Not found video");
+      } else {
+        res.send(movie);
+      }
+    });
   }
-  TrailerMovies.postTrailerMovies(id, (movie) => {
-    if (!movie) {
-      res.status(404).send("Not found video");
-    } else {
-      res.send(movie);
-    }
-  });
 };

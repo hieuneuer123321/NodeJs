@@ -23,7 +23,7 @@ module.exports = class VideoTrailer {
         const videoList = JSON.parse(data);
         const video = videoList.find((vid) => vid.id == id);
         if (!video) {
-          return callback({});
+          callback(null);
         } else {
           const videoFilter1 = video.videos.filter(
             (vid) =>
@@ -33,7 +33,7 @@ module.exports = class VideoTrailer {
                 vid.type.toLowerCase() == "teaser")
           );
           if (videoFilter1.length <= 0) {
-            return callback({});
+            callback(null);
           } else {
             videoFilter1.sort((a, b) => {
               const dateA = new Date(a.published_at);
