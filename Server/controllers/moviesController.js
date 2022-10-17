@@ -32,3 +32,18 @@ exports.getDiscover = (req, res, next) => {
     });
   }
 };
+exports.searchMovies = (req, res, next) => {
+  const keyword = req.params.keyword;
+  const page = req.params.page;
+  if (!keyword) {
+    res.status(400).send("Not found keyword parram");
+  } else {
+    Movies.searchMoviesList(keyword, page, (moviesList) => {
+      if (moviesList.length == 0) {
+        res.status(404).send("Not found movies");
+      } else {
+        res.send(moviesList);
+      }
+    });
+  }
+};

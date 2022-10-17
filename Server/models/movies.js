@@ -33,7 +33,7 @@ module.exports = class Movies {
   static getPageMoviesTrend(page, callback) {
     fs.readFile(p, (err, data) => {
       if (err) {
-        callback(1, null);
+        callback(null);
       } else {
         if (!page) page = 1;
         const response = {};
@@ -72,7 +72,7 @@ module.exports = class Movies {
   static getPageMoviesTopRate(page, callback) {
     fs.readFile(p, (err, data) => {
       if (err) {
-        callback(1, null);
+        callback(null);
       } else {
         if (!page) page = 1;
         const response = {};
@@ -121,10 +121,6 @@ module.exports = class Movies {
         const moviesArr = [...JSON.parse(data)];
         // lọc ra các phim có genre_ids truyền vào
         /////////////////
-        const t = moviesArr.filter((movie) => {
-          return !movie.genre_ids;
-        });
-        console.log(t);
         ///////////////////////
         const moviesArrDiscover = moviesArr.filter((movie) => {
           // tạo 1 mảng chứa các genre_ids của từng phim
@@ -132,7 +128,7 @@ module.exports = class Movies {
           // nếu phim đó có thuộc tính genre_ids
           if (movie.genre_ids) {
             genre_idsArr = movie.genre_ids;
-            // ngược lại nếu phim có có genre_ids mà có known_for
+            // ngược lại nếu phim k có có genre_ids mà có known_for
           } else if (movie.known_for) {
             if (movie.known_for.length == 0) {
               genre_idsArr = [];
@@ -186,6 +182,85 @@ module.exports = class Movies {
             callback(response);
           }
         });
+      }
+    });
+  }
+  static searchMoviesList(keyword, page, callback) {
+    fs.readFile(p, (err, data) => {
+      if (err) {
+        callback(null);
+      } else {
+        if (!page) page = 1;
+        const response = {};
+        // số phim trên 1 trang là 20
+        const moviesPage = 20;
+        //Loc dữ liệu theo keywword
+        // const moviesArr = JSON.parse(data)];
+        // moviesArr.sort((a, b) => b.vote_average - a.vote_average);
+        const moviesArr = JSON.parse(data);
+        // lấy phim có title, overview
+        const moviesSearchOverTit = moviesArr.filter((movie) => {
+          if (movie.overview) {
+            return movie.overview.toLowerCase().includes(keyword.toLowerCase());
+          }
+          if (movie.title) {
+            return movie.title.toLowerCase().includes(keyword.toLowerCase());
+          }
+        });
+        // lấy phim có known_for
+        const movieKnown_for = [];
+        const moviesKnown = moviesArr.filter((movie) => movie.known_for);
+        moviesKnown.forEach((movie) => {
+          movie.known_for.forEach((mo) => {
+            movieKnown_for.push(mo);
+          });
+        });
+        const moviesSearchKnown = movieKnown_for.filter((movie) => {
+          if (movie.overview) {
+            return movie.overview.toLowerCase().includes(keyword.toLowerCase());
+          }
+          if (movie.title) {
+            return movie.title.toLowerCase().includes(keyword.toLowerCase());
+          }
+        });
+        /// có những phim bị trùng
+        const moviesSearchListDulicate = [
+          ...moviesSearchOverTit,
+          ...moviesSearchKnown,
+        ];
+        // lọc ra các phim trùng
+        const moviesSearchList = moviesSearchListDulicate.filter((c, index) => {
+          return (
+            // findIndex tìm ra vị trí index đầu tiên thóa đk
+            moviesSearchListDulicate.findIndex((mo) => mo.id == c.id) === index
+          );
+        });
+        if (moviesSearchList.length <= 0) {
+          callback([]);
+        } else {
+          // số phần tử trong mảng
+          const moviesAllItem = moviesSearchList.length;
+          // tổng số trang = tổng phẩn tử / số phim trên 1 trang
+          const totalPage = Math.floor(
+            (moviesAllItem / moviesPage) % 2 === 0
+              ? moviesAllItem / moviesPage
+              : moviesAllItem / moviesPage + 1
+          );
+          // lọc ra số phim theo page là param truyền vào
+          let moviesInPage;
+          if (page === 1) {
+            moviesInPage = moviesSearchList.slice(0, 20);
+          } else {
+            const start = page * moviesPage - moviesPage;
+            const end = start + moviesPage;
+            moviesInPage = moviesSearchList.slice(start, end);
+          }
+          // slice cắt mảng từ phần tử thứ page -1 dến page - 1 + moviesPage
+          response.results = [...moviesInPage];
+          response.page = Number(page);
+          response.total_pages = totalPage;
+          callback(response);
+        }
       }
     });
   }
