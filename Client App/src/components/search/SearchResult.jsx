@@ -11,6 +11,7 @@ const SearchResult = ({ query }) => {
   const [movies, setMovies] = useState([]);
 
   //   const url = `${requests.fetchSearch}&query=${query}`;
+  // const url = `${requests.fetchSearch}/${query}`;
   const url = `${requests.fetchSearch}/${query}`;
 
   useEffect(() => {

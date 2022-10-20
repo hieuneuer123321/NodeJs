@@ -47,3 +47,31 @@ exports.searchMovies = (req, res, next) => {
     });
   }
 };
+exports.searchMoviesAdvanced = (req, res, next) => {
+  const keyword = req.params.keyword;
+  const genre = req.params.genre;
+  const mediaType = req.params.mediaType;
+  const language = req.params.language;
+  const year = req.params.year;
+  const page = req.params.page;
+  if (!keyword) {
+    //http://localhost:5000/8qlOkxz4wq/api/movies/search/a/28/movie/en/2022
+    res.status(400).send("Not found keyword parram");
+  } else {
+    Movies.searchMoviesListAdvanced(
+      keyword,
+      genre,
+      mediaType,
+      language,
+      year,
+      page,
+      (moviesList) => {
+        if (moviesList.length == 0) {
+          res.status(404).send("Not found movies");
+        } else {
+          res.send(moviesList);
+        }
+      }
+    );
+  }
+};

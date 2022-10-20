@@ -264,4 +264,129 @@ module.exports = class Movies {
       }
     });
   }
+  static searchMoviesListAdvanced(
+    keyword,
+    genre,
+    mediaType,
+    language,
+    year,
+    page,
+    callback
+  ) {
+    fs.readFile(p, (err, data) => {
+      if (err) {
+        callback(null);
+      } else {
+        if (!page) page = 1;
+        const response = {};
+        // số phim trên 1 trang là 20
+        const moviesPage = 20;
+        //Loc dữ liệu theo keywword
+
+        const moviesArr = JSON.parse(data);
+        // lấy phim có title, overview
+        const moviesSearchOverTit = moviesArr.filter((movie) => {
+          // lọc phim theo tiêu chí nâng cao
+          if (genre && movie.genre_ids) {
+            return movie.genre_ids.includes(Number(genre));
+          }
+          if (mediaType && movie.media_type) {
+            return movie.media_type
+              .toLowerCase()
+              .includes(mediaType.toLowerCase());
+          }
+          if (language && movie.original_language) {
+            return movie.original_language
+              .toLowerCase()
+              .includes(language.toLowerCase());
+          }
+          if (year && movie.release_date) {
+            const date = new Date(movie.release_date);
+            const yearOfDate = date.getFullYear();
+            return year == yearOfDate;
+          }
+          // lọc theo keyword
+          if (movie.overview) {
+            return movie.overview.toLowerCase().includes(keyword.toLowerCase());
+          }
+          if (movie.title) {
+            return movie.title.toLowerCase().includes(keyword.toLowerCase());
+          }
+        });
+
+        // lấy phim có known_for
+        const movieKnown_for = [];
+        const moviesKnown = moviesArr.filter((movie) => movie.known_for);
+        moviesKnown.forEach((movie) => {
+          movie.known_for.forEach((mo) => {
+            movieKnown_for.push(mo);
+          });
+        });
+        const moviesSearchKnown = movieKnown_for.filter((movie) => {
+          if (genre && movie.genre_ids) {
+            return movie.genre_ids.includes(Number(genre));
+          }
+          if (mediaType && movie.media_type) {
+            return movie.media_type
+              .toLowerCase()
+              .includes(mediaType.toLowerCase());
+          }
+          if (language && movie.original_language) {
+            return movie.original_language
+              .toLowerCase()
+              .includes(language.toLowerCase());
+          }
+          if (year && movie.release_date) {
+            const date = new Date(movie.release_date);
+            const yearOfDate = date.getFullYear();
+            return year == yearOfDate;
+          }
+          if (movie.overview) {
+            return movie.overview.toLowerCase().includes(keyword.toLowerCase());
+          }
+          if (movie.title) {
+            return movie.title.toLowerCase().includes(keyword.toLowerCase());
+          }
+        });
+        /// có những phim bị trùng
+        const moviesSearchListDulicate = [
+          ...moviesSearchOverTit,
+          ...moviesSearchKnown,
+        ];
+        // lọc ra các phim trùng
+        const moviesSearchList = moviesSearchListDulicate.filter((c, index) => {
+          return (
+            // findIndex tìm ra vị trí index đầu tiên thóa đk
+            moviesSearchListDulicate.findIndex((mo) => mo.id == c.id) === index
+          );
+        });
+        if (moviesSearchList.length <= 0) {
+          callback([]);
+        } else {
+          // số phần tử trong mảng
+          const moviesAllItem = moviesSearchList.length;
+          // tổng số trang = tổng phẩn tử / số phim trên 1 trang
+          const totalPage = Math.floor(
+            (moviesAllItem / moviesPage) % 2 === 0
+              ? moviesAllItem / moviesPage
+              : moviesAllItem / moviesPage + 1
+          );
+          // lọc ra số phim theo page là param truyền vào
+          let moviesInPage;
+          if (page === 1) {
+            moviesInPage = moviesSearchList.slice(0, 20);
+          } else {
+            const start = page * moviesPage - moviesPage;
+            const end = start + moviesPage;
+            moviesInPage = moviesSearchList.slice(start, end);
+          }
+          // slice cắt mảng từ phần tử thứ page -1 dến page - 1 + moviesPage
+          response.results = [...moviesInPage];
+          response.page = Number(page);
+          response.total_pages = totalPage;
+          callback(response);
+        }
+      }
+    });
+  }
 };
