@@ -13,7 +13,7 @@ const SearchResult = ({ query, genreid, media, language, year }) => {
   //   const url = `${requests.fetchSearch}&query=${query}`;
   // const url = `${requests.fetchSearch}/${query}`;
   const url = `${requests.fetchSearch}/${query}/${genreid}/${media}/${language}/${year}`;
-
+  console.log(url);
   useEffect(() => {
     async function fetchData() {
       //   const request = await axios.get(url);

@@ -22,7 +22,7 @@ const requests = {
   fetchHorrorMovies: `${hostting}${API_KEY2}/api/movies/discover/27`,
   fetchRomanceMovies: `${hostting}${API_KEY2}/api/movies/discover/10749`,
   fetchDocumentaries: `${hostting}${API_KEY2}/api/movies/discover/99`,
-  fetchSearch: `${hostting}${API_KEY2}/api/movies/search/`,
+  fetchSearch: `${hostting}${API_KEY2}/api/movies/search`,
 };
 
 export default requests;
