@@ -7,12 +7,12 @@ import "./SearchResult.css";
 
 const base_url = "https://image.tmdb.org/t/p/original";
 
-const SearchResult = ({ query }) => {
+const SearchResult = ({ query, genreid, media, language, year }) => {
   const [movies, setMovies] = useState([]);
 
   //   const url = `${requests.fetchSearch}&query=${query}`;
   // const url = `${requests.fetchSearch}/${query}`;
-  const url = `${requests.fetchSearch}/${query}`;
+  const url = `${requests.fetchSearch}/${query}/${genreid}/${media}/${language}/${year}`;
 
   useEffect(() => {
     async function fetchData() {

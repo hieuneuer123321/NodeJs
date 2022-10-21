@@ -15,12 +15,22 @@ const Search = () => {
   const handleSearch = () => {
     setQuery(searchInput);
   };
-  const handleChange = (e) => {
-    this.setState({ selectValue: e.target.value });
+  const handleChangeGenreId = (e) => {
+    setGenres(e.target.value);
+  };
+  const handleChangeMedia = (e) => {
+    setMedia(e.target.value);
+  };
+  const handleChangeYear = (e) => {
+    setYear(e.target.value);
+  };
+  const handleChangeLanguage = (e) => {
+    setLanguage(e.target.value);
   };
   const resetSearch = () => {
     setQuery("");
     setSearchInput("");
+    setMedia("");
   };
 
   return (
@@ -55,7 +65,11 @@ const Search = () => {
             </div>
             <div className="combo_box">
               <div className="select">
-                <select defaultValue={genreid}>
+                <select
+                  defaultValue={genreid}
+                  onChange={handleChangeGenreId}
+                  className="select_genre"
+                >
                   <option selected>Thể Loại Phim</option>
                   <option value="28">Action</option>
                   <option value="12">Adventure</option>
@@ -65,21 +79,33 @@ const Search = () => {
                 </select>
               </div>
               <div className="select">
-                <select defaultValue={media}>
+                <select
+                  defaultValue={media}
+                  onChange={handleChangeMedia}
+                  className="select_media"
+                >
                   <option selected>Type Media</option>
                   <option value="movies">Movies</option>
                   <option value="tv">TV</option>
                 </select>
               </div>
               <div className="select">
-                <select defaultValue={language}>
+                <select
+                  defaultValue={language}
+                  onChange={handleChangeLanguage}
+                  className="select_language"
+                >
                   <option selected>Language</option>
                   <option value="en">English</option>
                   <option value="ja">Japanese</option>
                 </select>
               </div>
               <div className="select">
-                <select defaultValue={year}>
+                <select
+                  defaultValue={year}
+                  onChange={handleChangeYear}
+                  className="select_year"
+                >
                   <option selected>Year</option>
                   <option value="2022">2022</option>
                   <option value="2021">2021</option>
@@ -114,7 +140,13 @@ const Search = () => {
           </div>
         </form>
       </div>
-      <SearchResult query={query} />
+      <SearchResult
+        query={query}
+        genreid={genreid}
+        media={media}
+        language={language}
+        year={year}
+      />
     </div>
   );
 };
