@@ -70,7 +70,9 @@ const Search = () => {
                   onChange={handleChangeGenreId}
                   className="select_genre"
                 >
-                  <option selected>Thể Loại Phim</option>
+                  <option selected value="">
+                    Thể Loại Phim
+                  </option>
                   <option value="28">Action</option>
                   <option value="12">Adventure</option>
                   <option value="16">Animation</option>
@@ -84,9 +86,12 @@ const Search = () => {
                   onChange={handleChangeMedia}
                   className="select_media"
                 >
-                  <option selected>Type Media</option>
+                  <option selected value="">
+                    Type Media
+                  </option>
                   <option value="movies">Movies</option>
                   <option value="tv">TV</option>
+                  <option value="person">TV</option>
                 </select>
               </div>
               <div className="select">
@@ -95,9 +100,12 @@ const Search = () => {
                   onChange={handleChangeLanguage}
                   className="select_language"
                 >
-                  <option selected>Language</option>
+                  <option selected value="">
+                    Language
+                  </option>
                   <option value="en">English</option>
                   <option value="ja">Japanese</option>
+                  <option value="kr">Korean</option>
                 </select>
               </div>
               <div className="select">
@@ -106,7 +114,9 @@ const Search = () => {
                   onChange={handleChangeYear}
                   className="select_year"
                 >
-                  <option selected>Year</option>
+                  <option selected value="">
+                    Year
+                  </option>
                   <option value="2022">2022</option>
                   <option value="2021">2021</option>
                   <option value="2020">2020</option>
