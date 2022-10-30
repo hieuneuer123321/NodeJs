@@ -91,7 +91,7 @@ const Search = () => {
                   </option>
                   <option value="movies">Movies</option>
                   <option value="tv">TV</option>
-                  <option value="person">TV</option>
+                  <option value="person">Person</option>
                 </select>
               </div>
               <div className="select">

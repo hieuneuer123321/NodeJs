@@ -285,34 +285,48 @@ module.exports = class Movies {
 
         const moviesArr = JSON.parse(data);
         // lấy phim có title, overview
-        const moviesSearchOverTit = moviesArr.filter((movie) => {
-          // lọc phim theo tiêu chí nâng cao
-          if (genre && movie.genre_ids) {
-            return movie.genre_ids.includes(Number(genre));
-          }
-          if (mediaType && movie.media_type) {
-            return movie.media_type
-              .toLowerCase()
-              .includes(mediaType.toLowerCase());
-          }
-          if (language && movie.original_language) {
-            return movie.original_language
-              .toLowerCase()
-              .includes(language.toLowerCase());
-          }
-          if (year && movie.release_date) {
-            const date = new Date(movie.release_date);
-            const yearOfDate = date.getFullYear();
-            return year == yearOfDate;
-          }
-          // lọc theo keyword
-          if (movie.overview) {
-            return movie.overview.toLowerCase().includes(keyword.toLowerCase());
-          }
-          if (movie.title) {
-            return movie.title.toLowerCase().includes(keyword.toLowerCase());
-          }
-        });
+        const moviesSearchOverTit = moviesArr
+          .filter((movie) => {
+            // lọc theo keyword
+            if (movie.overview || movie.title) {
+              return movie.overview
+                ? movie.overview.toLowerCase().includes(keyword.toLowerCase())
+                : movie.title.toLowerCase().includes(keyword.toLowerCase());
+            }
+          })
+          .filter((movie2) => {
+            // lọc phim theo tiêu chí nâng cao
+            if (genre && movie2.genre_ids) {
+              return movie2.genre_ids.includes(Number(genre));
+            } else {
+              return movie2;
+            }
+          })
+          .filter((movie3) => {
+            if (language && movie3.original_language) {
+              return movie3.original_language
+                .toLowerCase()
+                .includes(language.toLowerCase());
+            } else {
+              return movie3;
+            }
+          })
+          .filter((movie4) => {
+            if (year && movie4.release_date) {
+              const date = new Date(movie4.release_date);
+              const yearOfDate = date.getFullYear();
+              return year == yearOfDate;
+            } else {
+              return movie4;
+            }
+          })
+          .filter((movie5) => {
+            if (mediaType && movie5.media_type) {
+              return movie5.media_type
+                .toLowerCase()
+                .includes(mediaType.toLowerCase());
+            } else return movie5;
+          });
 
         // lấy phim có known_for
         const movieKnown_for = [];
@@ -322,32 +336,49 @@ module.exports = class Movies {
             movieKnown_for.push(mo);
           });
         });
-        const moviesSearchKnown = movieKnown_for.filter((movie) => {
-          if (genre && movie.genre_ids) {
-            return movie.genre_ids.includes(Number(genre));
-          }
-          if (mediaType && movie.media_type) {
-            return movie.media_type
-              .toLowerCase()
-              .includes(mediaType.toLowerCase());
-          }
-          if (language && movie.original_language) {
-            return movie.original_language
-              .toLowerCase()
-              .includes(language.toLowerCase());
-          }
-          if (year && movie.release_date) {
-            const date = new Date(movie.release_date);
-            const yearOfDate = date.getFullYear();
-            return year == yearOfDate;
-          }
-          if (movie.overview) {
-            return movie.overview.toLowerCase().includes(keyword.toLowerCase());
-          }
-          if (movie.title) {
-            return movie.title.toLowerCase().includes(keyword.toLowerCase());
-          }
-        });
+        const moviesSearchKnown = movieKnown_for
+          .filter((movie) => {
+            // lọc theo keyword
+            if (movie.overview || movie.title) {
+              return movie.overview
+                ? movie.overview.toLowerCase().includes(keyword.toLowerCase())
+                : movie.title.toLowerCase().includes(keyword.toLowerCase());
+            }
+          })
+          .filter((movie2) => {
+            // lọc phim theo tiêu chí nâng cao
+            if (genre && movie2.genre_ids) {
+              return movie2.genre_ids.includes(Number(genre));
+            } else {
+              return movie2;
+            }
+          })
+          .filter((movie3) => {
+            if (language && movie3.original_language) {
+              return movie3.original_language
+                .toLowerCase()
+                .includes(language.toLowerCase());
+            } else {
+              return movie3;
+            }
+          })
+          .filter((movie4) => {
+            if (year && movie4.release_date) {
+              const date = new Date(movie4.release_date);
+              const yearOfDate = date.getFullYear();
+              return year == yearOfDate;
+            } else {
+              return movie4;
+            }
+          })
+          .filter((movie5) => {
+            if (mediaType && movie5.media_type) {
+              return movie5.media_type
+                .toLowerCase()
+                .includes(mediaType.toLowerCase());
+            } else return movie5;
+          });
+
         /// có những phim bị trùng
         const moviesSearchListDulicate = [
           ...moviesSearchOverTit,

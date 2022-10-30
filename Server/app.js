@@ -35,7 +35,25 @@ app.use("/:token", urlencodedParser, (req, res, next) => {
 app.use("/:token/api/movies/video", urlencodedParser, rtTrailerMovies);
 app.use("/:token/api/movies/search", urlencodedParser, rtSearchMovies);
 app.use("/:token/api/movies", urlencodedParser, rtMovies);
-
+// app.use("/", (req, res, next) => {
+//   res.status(404).json({
+//     message: "Route not found",
+//   });
+// });
+app.use("/", urlencodedParser, (req, res, next) => {
+  const token = req.params.token;
+  if (!token) {
+    res.status(401).send("Unauthorized");
+  } else {
+    UserToken.getToken(token, (user) => {
+      if (user) {
+        next();
+      } else {
+        res.status(401).send("Unauthorized");
+      }
+    });
+  }
+});
 app.use((req, res, next) => {
   res.status(404).json({
     message: "Route not found",

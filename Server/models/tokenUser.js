@@ -18,6 +18,8 @@ module.exports = class TokenUser {
         });
         if (userToken) {
           callback(userToken);
+        } else {
+          callback(null);
         }
       }
     });
