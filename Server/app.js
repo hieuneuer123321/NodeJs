@@ -12,6 +12,10 @@ const urlencodedParser = bodyParser.urlencoded({ extended: false });
 // app.use("/", urlencodedParser, (req, res, next) => {
 //   res.send("<h1>Test</h1>");
 // });
+///connect database mysql
+const db = require("./tool/database");
+
+/////
 app.use(cors());
 app.use(RtAddProduct.router);
 app.use(RtCart);

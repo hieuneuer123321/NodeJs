@@ -6,9 +6,20 @@ exports.getProduct = function (req, res, next) {
   // console.log("Product");
   // res.send(Product.fetchAip());
   // console.log(typeof Product.fetchAip);
-  Product.fetchAip((product) => {
-    res.send(product);
-  });
+  // Product.fetchAip((product) => {
+  //   res.send(product);
+  // });
+  Product.fetchAip()
+    .then((products) => {
+      if (products[0].length > 0) {
+        for (const product of products) {
+          res.send(product);
+        }
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+    });
 };
 exports.postProduct = function (req, res, next) {
   // res.send(users);
@@ -22,7 +33,6 @@ exports.postProduct = function (req, res, next) {
     req.body.price,
     req.body.description
   );
-  console.log(products);
   products.save();
   res.redirect("http://localhost:3000/");
 };
