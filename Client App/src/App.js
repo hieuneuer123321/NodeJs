@@ -3,6 +3,7 @@ import "./App.css";
 import AddProduct from "./components/Add_Product";
 import Products from "./components/Product";
 import Cart from "./components/Cart";
+import Admin from "./components/admin";
 import {
   Switch,
   Route,
@@ -85,7 +86,7 @@ class App extends Component {
                   </NavLink>
                 </li>
                 <li class="main-header__item">
-                  <NavLink class="" to="/">
+                  <NavLink class="" to="/admin-product">
                     Admin Product
                   </NavLink>
                 </li>
@@ -119,6 +120,17 @@ class App extends Component {
                 )}
               />
               <Route path="/add-product" component={AddProduct} />
+              <Route
+                exact
+                path="/admin-product"
+                component={() => (
+                  <Admin
+                    products={
+                      this.state.products.length > 0 ? this.state.products : []
+                    }
+                  />
+                )}
+              />
               <Redirect to="/" />
             </Switch>
           </main>

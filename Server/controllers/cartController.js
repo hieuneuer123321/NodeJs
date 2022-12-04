@@ -13,12 +13,18 @@ exports.postCart = function (req, res, next) {
   // Product.findById(productId, (product) => {
   //   Cart.addProduct(productId, product.price);
   // });
-  Product.findById(productId)
-    .then((product) => {
-      if (product[0]) {
-        Cart.addProduct(productId, product[0].price);
-      }
-    })
-    .catch((err) => {});
+  ////////////////////////////////
+  // Product.findById(productId)
+  //   .then((product) => {
+  //     if (product[0]) {
+  //       Cart.addProduct(productId, product[0].price);
+  //     }
+  //   })
+  //   .catch((err) => {});
+  // res.redirect("http://localhost:3000/Cart");
+  //////////////////
+  Product.findByPk(productId).then((product) => {
+    Cart.addProduct(productId, product.price);
+  });
   res.redirect("http://localhost:3000/Cart");
 };
