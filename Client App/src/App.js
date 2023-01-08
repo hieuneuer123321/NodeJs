@@ -11,6 +11,7 @@ import {
   BrowserRouter,
   NavLink,
 } from "react-router-dom";
+import UpdateProduct from "./components/Update_Product";
 class App extends Component {
   constructor(props) {
     super(props);
@@ -42,6 +43,9 @@ class App extends Component {
   }
   render() {
     console.log(this.state.cart);
+    const RenderProductDetails = ({ match }) => {
+      return <UpdateProduct id={parseInt(match.params.id, 10)} />;
+    };
     // const ProductWithId = ({ match }) => {
     //   if (this.state.products.length > 0) {
     //     return <Cart product={[]} />;
@@ -120,6 +124,10 @@ class App extends Component {
                 )}
               />
               <Route path="/add-product" component={AddProduct} />
+              <Route
+                path="/update-product/:id"
+                component={RenderProductDetails}
+              />
               <Route
                 exact
                 path="/admin-product"

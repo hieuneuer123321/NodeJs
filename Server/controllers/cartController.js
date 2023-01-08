@@ -23,8 +23,17 @@ exports.postCart = function (req, res, next) {
   //   .catch((err) => {});
   // res.redirect("http://localhost:3000/Cart");
   //////////////////
-  Product.findByPk(productId).then((product) => {
-    Cart.addProduct(productId, product.price);
-  });
+  // Product.findByPk(productId).then((product) => {
+  //   Cart.addProduct(productId, product.price);
+  // });
+  // res.redirect("http://localhost:3000/Cart");
+  /// get all + where
+  Product.findAll({ where: { id: productId } })
+    .then((products) => {
+      Cart.addProduct(productId, products[0].price);
+    })
+    .catch((err) => {
+      console.error(err);
+    });
   res.redirect("http://localhost:3000/Cart");
 };

@@ -11,5 +11,14 @@ router.post(
   urlencodedParser,
   controller_Products.deleteProduct
 );
-
+router.get(
+  "/update-product/:productId",
+  urlencodedParser,
+  controller_Products.getUpdateProduct
+);
+router.post(
+  "/update-product",
+  urlencodedParser,
+  controller_Products.postUpdateProduct
+);
 exports.router = router;

@@ -81,3 +81,49 @@ exports.deleteProduct = function (req, res, next) {
     });
   res.redirect("http://localhost:3000/admin-product");
 };
+exports.getUpdateProduct = function (req, res, next) {
+  const editMode = req.query.edit;
+  // const productId = req.body.productId;
+
+  if (!editMode) {
+    res.redirect("http://localhost:3000/admin-product");
+  } else {
+    const productId = req.params.productId;
+    console.log(productId);
+    Product.findByPk(productId)
+      .then((product) => {
+        res.send(product);
+      })
+      .then((result) => {
+        console.log("Get Product By Id");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+};
+exports.postUpdateProduct = function (req, res, next) {
+  const productId = req.body.productId;
+  console.log(productId);
+  if (!productId) {
+    res.redirect("http://localhost:3000/admin-product");
+  } else {
+    const updatedTitle = req.body.title;
+    const updatedImageUrl = req.body.image;
+    const updatedPrice = req.body.price;
+    const updatedDesc = req.body.description;
+    Product.findByPk(productId)
+      .then((product) => {
+        product.title = updatedTitle;
+        product.price = updatedPrice;
+        product.description = updatedDesc;
+        product.imageUrl = updatedImageUrl;
+        return product.save();
+      })
+      .then((result) => {
+        console.log("UPDATED PRODUCT!");
+        res.redirect("http://localhost:3000/admin-product");
+      })
+      .catch((err) => console.log(err));
+  }
+};

@@ -1,11 +1,12 @@
 import React, { Component } from "react";
-
+import { Link } from "react-router-dom";
 export default class admin extends Component {
   constructor(props) {
     super(props);
     this.state = {};
   }
   render() {
+    const style = { display: "inline-block" };
     function renderProducts(productList) {
       if (productList.length <= 0) {
         return <h1>No Products Found !</h1>;
@@ -24,7 +25,27 @@ export default class admin extends Component {
                 <p class="product__description">{product.description}</p>
               </div>
               <div class="card__actions">
+                {/* <form
+                  style={style}
+                  action="http://localhost:5000/update-product"
+                  method="POST"
+                >
+                  <input
+                    type="hidden"
+                    name="productId"
+                    id="productId"
+                    value={product.id}
+                  ></input>
+
+                  <button class="btn btn-primary" type="submit">
+                    Edit
+                  </button>
+                </form> */}
+                <Link to={"update-product/" + product.id} class="btn">
+                  Edit
+                </Link>
                 <form
+                  style={style}
                   action="http://localhost:5000/delete-product"
                   method="POST"
                 >
@@ -34,6 +55,7 @@ export default class admin extends Component {
                     id="productId"
                     value={product.id}
                   ></input>
+
                   <button class="btn btn-primary" type="submit">
                     Delete
                   </button>
